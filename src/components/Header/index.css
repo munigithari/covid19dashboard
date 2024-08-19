@@ -1,82 +1,89 @@
-.header-link-class {
-  text-decoration: none;
-}
-
-.nav-container {
-  background-color: #1e1e30;
+.desktop-header-container {
   width: 100%;
   height: 80px;
+  background-color: #1e1e30;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 150px;
+  padding: 0px 100px;
+  position: fixed;
+  top: 0;
 }
 
-.header-covid-logo {
-  font-family: Bree Serif;
-  font-style: normal;
-  font-weight: normal;
+.menuIcon {
+  color: #f8fafc;
+  width: 35px;
+  height: 20px;
+}
+
+.logo {
+  font-family: 'Bree Serif';
   font-size: 20px;
-  line-height: 24px;
   color: #f8fafc;
 }
-.header-india-logo {
-  color: #4689f7;
+.india {
+  color: #3b82f6;
 }
 
-.header-menu {
+.navBar {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
   align-items: center;
-  min-width: 30%;
+  background-color: #1e1e30;
 }
 
-.header-menu-paragraph {
+.item {
+  list-style: none;
   font-family: Roboto;
-  font-weight: normal;
-  line-height: 24px;
+  font-weight: 500;
   font-size: 16px;
+  line-height: 24px;
   color: #94a3b8;
   margin: 0px 16px;
 }
 
-.header-menu-paragraph:hover {
-  color: #f8fafc;
+.link {
+  text-decoration: none;
 }
-.header-list-container {
+
+.toggle-button {
+  background-color: transparent;
+  outline: none;
+  border: none;
+}
+
+.mobile-header-container {
   display: none;
 }
+
 @media (max-width: 600px) {
-  .header-list-container {
+  .mobile-header-container {
     display: block;
     display: flex;
     flex-direction: row;
-    width: 100%;
-    min-height: 80px;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 10px;
+    width: 100%;
+    min-height: 80px;
     background-color: #1e1e30;
+    padding: 0px 10px;
+    /* position: fixed;
+    top: 0; */
   }
 
-  .nav-container {
+  .desktop-header-container {
     display: none;
   }
+  .navBar {
+    margin: 0px;
+    padding: 0px;
+  }
 }
-.mobile-menu {
-  background: none;
-  border: none;
-  cursor: pointer;
-  outline: none;
-}
-.mobile-unorderlist {
+.menu {
   background-color: #1e1e30;
-  padding: 15px;
-  margin: 0;
-  text-align: center;
+  margin: 0px;
 }
-li {
-  list-style-type: none;
+button {
+  cursor: pointer;
 }

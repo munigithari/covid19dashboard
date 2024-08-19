@@ -2,100 +2,73 @@ import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Header from '../Header'
 import Footer from '../Footer'
-import AboutCovidFaqList from '../AboutCovidFaqList'
-import AboutCovidFactList from '../AboutCovidFactList'
+import FaqItem from '../FaqItem'
 import './index.css'
 
 class About extends Component {
-  state = {
-    isLoading: true,
-    aboutList: {},
-    aboutFaq: {},
-  }
+  state = {isLoading: true, faqData: []}
 
   componentDidMount() {
-    this.aboutCovidList()
+    this.getFaqs()
   }
 
-  aboutCovidList = async () => {
-    const apiUrl = 'https://apis.ccbp.in/covid19-faqs'
-    const options = {
-      method: 'GET',
-    }
-    const response = await fetch(apiUrl, options)
-    if (response.ok) {
-      const data = await response.json()
-      const aboutBannerData = data.factoids.map(eachItem => ({
-        banner: eachItem.banner,
-        id: eachItem.id,
-      }))
-      const aboutFaqData = data.faq.map(eachItem => ({
-        aboutAnswer: eachItem.answer,
-        aboutCategory: eachItem.category,
-        aboutQuestionNo: eachItem.qno,
-        aboutQuestion: eachItem.question,
-      }))
+  getFaqs = async () => {
+    const url = 'https://apis.ccbp.in/covid19-faqs'
+    /* const options = {method: 'GET'} */
 
-      this.setState({
-        aboutFaq: aboutFaqData,
-        aboutList: aboutBannerData,
-        isLoading: false,
-      })
-    } else {
-      console.log('data not available')
-    }
+    const response = await fetch(url)
+    const data = await response.json()
+    const {faq} = data
+    this.setState({isLoading: false, faqData: faq})
   }
 
-  aboutCovidLists = () => {
-    const {aboutFaq, aboutList} = this.state
+  renderLoadingView = () => (
+    <div className=" loader-container" data-testid="aboutRouteLoader" >
+      <Loader type="Oval" color="#007BFF" height="50" width="50" />
+    </div>
+  )
+
+  renderFaqs = () => {
+    const {faqData} = this.state
     return (
       <>
-        <ul className="About-about-facts" data-testid="faqsUnorderedList">
-          {aboutFaq.map(eachItem => (
-            <AboutCovidFaqList
-              answer={eachItem.aboutAnswer}
-              question={eachItem.aboutQuestion}
-              key={eachItem.aboutQuestionNo}
+        <ul className="faqs-list" data-testid="faqsUnorderedList" >
+          {faqData.map(obj => (
+            <FaqItem
+              key={obj.qno}
+              answer={obj.answer}
+              question={obj.question}
             />
-          ))}
-        </ul>
-
-        <h1 className="About-heading-class">Factoids</h1>
-        <ul className="About-about-facts">
-          {aboutList.map(eachItem => (
-            <AboutCovidFactList banner={eachItem.banner} key={eachItem.id} />
           ))}
         </ul>
       </>
     )
   }
 
+  renderAboutView = () => (
+    <>
+      <div className="about-content-container">
+        <h1 className="about-title">About</h1>
+        <p className="about-last-update-time">
+          Last update on march 28th 2021.
+        </p>
+        <p className="about-sub-title">
+          COVID-19 vaccines be ready for distribution
+        </p>
+        <div className="faq-list-container">{this.renderFaqs()}</div>
+      </div>
+      <Footer />
+    </>
+  )
+
   render() {
     const {isLoading} = this.state
     return (
       <>
         <Header />
-        <div className="About-container">
-          {isLoading ? (
-            <div className="loading-class" data-testid="aboutRouteLoader">
-              <Loader type="Oval" color="#007BFF" height={50} width={50} />
-            </div>
-          ) : (
-            <>
-              <div className="About-container-column">
-                <h1 className="About-heading">About</h1>
-                <p className="About-paragraph">
-                  Last update on march 28th 2021.
-                </p>
-                <p className="About-heading-class">
-                  COVID-19 vaccines be ready for distribution
-                </p>
-              </div>
-              <div>{this.aboutCovidLists()}</div>
-            </>
-          )}
+        <div className="about-bg-container">
+          {isLoading ? this.renderLoadingView() : this.renderAboutView()}
         </div>
-        <Footer />
       </>
     )
   }
